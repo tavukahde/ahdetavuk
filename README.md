@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ahde Tavukçuluk - Helal Kesim</title>
+  <style>
+    :root {
+      --yesil-koyu: #0F3D1A;
+      --yesil: #1F5F2A;
+      --altin: #B8860B;
+      --krem: #F8F7F4;
+      --yazi: #2C2C2C;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+    body { background: var(--krem); color: var(--yazi); }
+    .container { width: 90%; max-width: 1100px; margin: 0 auto; }
+
+    header { background: var(--yesil-koyu); color: white; padding: 18px 0; border-bottom: 3px solid var(--altin); position: sticky; top: 0; z-index: 100; }
+    nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    nav h1 { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
+    nav ul { list-style: none; display: flex; gap: 25px; }
+    nav a { color: white; text-decoration: none; font-weight: 500; padding: 8px 4px; transition: 0.2s; }
+    nav a:hover { color: var(--altin); }
+    nav a.active { border-bottom: 3px solid var(--altin); font-weight: bold; }
+
+    .page { display: none; padding: 50px 0; }
+    .page.active { display: block; }
+
+    .hero { background: white; color: var(--yesil); text-align: center; padding: 60px 20px; border-bottom: 1px solid #E0E0E0; }
+    .hero h2 { font-size: 36px; margin-bottom: 15px; line-height: 1.4; font-weight: 700; color: var(--yesil-koyu); }
+    .hero p { font-size: 18px; margin-bottom: 30px; color: #555; }
+    .btn { background: var(--altin); color: white; padding: 14px 32px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; cursor: pointer; border: none; transition: 0.2s; letter-spacing: 0.5px; }
+    .btn:hover { background: #9A7209; transform: translateY(-2px); }
+
+    .guven { padding: 40px 0; background: white; }
+    .guven .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .guven-card { background: var(--krem); padding: 20px; border-radius: 6px; border-left: 4px solid var(--altin); font-weight: 600; color: var(--yesil-koyu); }
+
+    .features { padding: 50px 0; text-align: center; }
+    .features h2 { margin-bottom: 30px; font-size: 30px; color: var(--yesil-koyu); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+    .card { background: white; padding: 25px; border-radius: 6px; border-top: 3px solid var(--altin); box-shadow: 0 2px 10px rgba(0,0,0,0.04); text-align: left; }
+
+    .form-section { background: white; padding: 50px 0; }
+    .form-box { max-width: 700px; margin: 0 auto; background: var(--krem); padding: 35px; border-radius: 8px; border: 1px solid #E0E0E0; }
+    .form-box h2 { text-align: center; color: var(--yesil-koyu); margin-bottom: 25px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; }
+    .form-group input, .form-group textarea { width: 100%; padding: 14px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; background: white; }
+    
+    .accordion-header { background: var(--yesil-koyu); color: white; padding: 14px 20px; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px; }
+    .accordion-header:hover { background: var(--yesil); }
+    .accordion-content { display: none; padding-top: 15px; }
+    .accordion-content.active { display: block; }
+    .arrow { transition: 0.3s; }
+    .arrow.open { transform: rotate(180deg); }
+
+    .checkbox-group { background: white; padding: 20px; border-radius: 6px; border: 1px solid #ddd; }
+    .checkbox-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding: 12px; background: #fafafa; border-radius: 6px; border: 1px solid #eee; }
+    .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+    .checkbox-item label { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px; flex: 1; }
+    .adet-input { width: 90px; padding: 8px; border: 1px solid #bbb; border-radius: 4px; font-size: 15px; text-align: center; }
+    .birim { color: var(--yesil); font-size: 14px; font-weight: 600; min-width: 60px; }
+
+    .btn-group { display: flex; gap: 15px; margin-top: 10px; }
+    .btn-kadin { width: 50%; padding: 16px; background: #8E24AA; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn-erkek { width: 50%; padding: 16px; background: #1565C0; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn-kadin:hover { background: #6A1B9A; }
+    .btn-erkek:hover { background: #0D47A1; }
+
+    .hata { border: 2px solid #D32F2F !important; background: #FFEBEE !important; }
+
+    .tavsiye-list { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 6px; border-left: 4px solid var(--altin); }
+    .tavsiye-list li { margin-bottom: 18px; font-size: 17px; line-height: 1.6; }
+
+    .hakkimizda { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 6px; line-height: 1.8; font-size: 17px; }
+    .hakkimizda h2 { color: var(--yesil-koyu); margin-bottom: 20px; text-align: center; }
+
+    /* FİYAT TABLOSU */
+    .fiyat-tablo { max-width: 800px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+    .fiyat-tablo table { width: 100%; border-collapse: collapse; }
+    .fiyat-tablo th { background: var(--yesil-koyu); color: white; padding: 16px; text-align: left; font-size: 16px; }
+    .fiyat-tablo td { padding: 14px 16px; border-bottom: 1px solid #eee; font-size: 15px; }
+    .fiyat-tablo tr:nth-child(even) { background: var(--krem); }
+    .fiyat-tablo .fiyat { color: var(--altin); font-weight: bold; font-size: 16px; text-align: right; }
+    .not { text-align: center; margin-top: 20px; color: #777; font-size: 14px; }
+
+    .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #0F3D1A; color: white; padding: 14px 20px; border-radius: 50px; font-weight: bold; font-size: 15px; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+    .whatsapp-float:hover { transform: scale(1.05); }
+
+    footer { background: #1A1A1A; color: #ccc; text-align: center; padding: 30px 0; margin-top: 30px; }
+
+    @media (max-width: 700px) {
+      nav ul { gap: 12px; font-size: 14px; }
+      .hero h2 { font-size: 28px; }
+      .checkbox-item { flex-direction: column; align-items: flex-start; }
+      .btn-group { flex-direction: column; }
+      .btn-kadin, .btn-erkek { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <h1>AHDE TAVUKÇULUK</h1>
+        <ul id="menu">
+          <li><a href="#" id="link-anasayfa" class="active" onclick="showPage('anasayfa')">Ana Sayfa</a></li>
+          <li><a href="#" id="link-fiyat" onclick="showPage('fiyat')">Fiyat Listesi</a></li>
+          <li><a href="#" id="link-tavsiye" onclick="showPage('tavsiye')">Tavsiyeler</a></li>
+          <li><a href="#" id="link-hakkimizda" onclick="showPage('hakkimizda')">Hakkımızda</a></li>
+          <li><a href="#" id="link-siparis" onclick="showPage('anasayfa'); setTimeout(()=>document.getElementById('siparis').scrollIntoView(), 100)">Sipariş</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div id="anasayfa" class="page active">
+    <section class="hero">
+      <h2>TEVHİD VE SÜNNETE UYGUN</h2>
+      <p>Helal Kesim Anaç Tavuk ve Doğal Ürünler</p>
+      <button class="btn" onclick="document.getElementById('siparis').scrollIntoView()">SİPARİŞ VER</button>
+    </section>
+
+    <section class="guven">
+      <div class="container">
+        <div class="grid">
+          <div class="guven-card">✓ Helal Sertifikalı Kesim</div>
+          <div class="guven-card">✓ Aynı Gün Kapına Teslimat</div>
+          <div class="guven-card">✓ %100 Doğal ve Taze Ürünler</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="urunler" class="features container">
+      <h2>Ürünlerimiz</h2>
+      <div class="grid">
+        <div class="card"><h3>🐔 Anaç Horoz Piliç Tavuk</h3><p>Günlük helal kesim</p></div>
+        <div class="card"><h3>🥚 Anaç Tavuk Yumurtası</h3><p>Köy yumurtası</p></div>
+        <div class="card"><h3>🧈 Tereyağı & Zeytinyağı</h3><p>Doğal ve sızma</p></div>
+        <div class="card"><h3>🦆 Ördek - Kaz - Hindi</h3><p>Sipariş üzerine</p></div>
+        <div class="card"><h3>🍗 Tavuk - Taşlık - Ciğer</h3><p>Sipariş üzerine</p></div>
+        <div class="card"><h3>🚚 Adrese Teslim</h3><p>Her pazar günü</p></div>
+      </div>
+    </section>
+
+    <section id="siparis" class="form-section">
+      <div class="container">
+        <div class="form-box">
+          <h2>Hemen Sipariş Ver</h2>
+          <form id="siparisForm">
+            <div class="form-group"><label>Ad Soyad</label><input type="text" id="ad" required></div>
+            <div class="form-group"><label>Telefon</label><input type="tel" id="tel" required></div>
+            
+            <div class="form-group">
+              <div class="accordion-header" onclick="toggleUrunler()">
+                <span>Ürün Seçimi - Tane/Kg Yaz</span>
+                <span class="arrow" id="arrow">▼</span>
+              </div>
+              <div class="accordion-content" id="urunlerAccordion">
+                <div class="checkbox-group" id="urunler">
+                  <div class="checkbox-item"><label><input type="checkbox" value="Anaç Tavuk"> Anaç Tavuk</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Anaç Horoz"> Anaç Horoz</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Anaç Tavuk Yumurtası"> Anaç Tavuk Yumurtası</label><input type="number" class="adet-input" min="1"><span class="birim">Koli</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Tereyağı"> Tereyağı</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Zeytinyağı"> Zeytinyağı</label><input type="number" class="adet-input" min="1"><span class="birim">Lt</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Ördek"> Ördek</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Hindi"> Hindi</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Piliç Tavuk"> Piliç Tavuk</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Tavuk Taşlık"> Tavuk Taşlık</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                  <div class="checkbox-item"><label><input type="checkbox" value="Tavuk Ciğer"> Tavuk Ciğer</label><input type="number" class="adet-input" min="1"><span class="birim">Kg</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group"><label>Adres</label><textarea id="adres" rows="2"></textarea></div>
+            <div class="form-group"><label>Özel Not</label><textarea id="not" rows="3"></textarea></div>
+
+            <div class="form-group btn-group">
+              <button type="button" class="btn-kadin" onclick="whatsappGonder('kadin')">👩 Kadınlar İçin Sipariş oluştur</button>
+              <button type="button" class="btn-erkek" onclick="whatsappGonder('erkek')">👨 Erkekler İçin Sipariş oluştur</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- GÜNCEL FİYAT LİSTESİ -->
+  <div id="fiyat" class="page">
+    <div class="container">
+      <h2 style="text-align:center; color:var(--yesil-koyu); font-size:32px; margin-bottom:30px;">2026 Fiyat Listesi</h2>
+      <div class="fiyat-tablo">
+        <table>
+          <thead>
+            <tr>
+              <th>Ürün</th>
+              <th style="text-align:right;">Birim Fiyat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>🐔 Anaç Tavuk</td>
+              <td class="fiyat">160 TL / Kg</td>
+            </tr>
+            <tr>
+              <td>🐓 Anaç Horoz</td>
+              <td class="fiyat">175 TL / Kg</td>
+            </tr>
+            <tr>
+              <td>🥚 Anaç Tavuk Yumurtası</td>
+              <td class="fiyat">200 TL / Koli</td>
+            </tr>
+            <tr>
+              <td>🧈 Doğal Tereyağı</td>
+              <td class="fiyat">650 TL / Kg</td>
+            </tr>
+            <tr>
+              <td>🫒 Doğal Zeytinyağı</td>
+              <td class="fiyat">325 TL / Lt</td>
+            </tr>
+            <tr>
+              <td>🦆 Ördek</td>
+              <td class="fiyat">600 TL / Kg</td>
+            </tr>
+            <tr>
+              <td>🦃 Hindi</td>
+              <td class="fiyat">600 TL / Kg</td>
+            </tr>
+            <tr>
+              <td>🍗 Piliç Tavuk</td>
+              <td class="fiyat">150 TL / Kg</td>
+            </tr>
+            <tr>
+              <td>🍗 Tavuk Taşlık</td>
+              <td class="fiyat">130 TL / Kg</td>
+            </tr>
+            <tr>
+              <td>🍗 Tavuk Ciğer</td>
+              <td class="fiyat">100 TL / Kg</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="not">* Ankara içi toplu siparişlerde teslimat ücretsizdir...</p>
+    </div>
+  </div>
+
+  <div id="tavsiye" class="page">
+    <div class="container">
+      <h2 style="text-align:center; color:var(--yesil-koyu); font-size:32px; margin-bottom:30px;">Hazırlama ve Tavsiyeler</h2>
+      <ul class="tavsiye-list">
+        <li>✓ <b>Anaç Tavuğun pişirilme süresine dikkat!</b> Düdüklü tencerede 45-50 dk pişirmenizi tavsiye ederiz.</li>
+        <li>✓ <b>Ürünleri yıkayıp dolaba koymalıyız!</b> Hijyen için aldığınız ürünleri buzdolabında +4 derecede muhafaza edin.</li>
+        <li>✓ <b>Yine de aklınıza takılan bir soru varsa</b> aşağıdaki butonlardan bize direkt ulaşabilirsiniz.</li>
+      </ul>
+      <div class="btn-group" style="max-width:600px; margin:30px auto 0;">
+        <button class="btn-kadin" onclick="whatsappGonder('kadin')">👩 Kadın</button>
+        <button class="btn-erkek" onclick="whatsappGonder('erkek')">👨 Erkek</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="hakkimizda" class="page">
+    <div class="container">
+      <div class="hakkimizda">
+        <h2>Hakkımızda</h2>
+        <p>
+          <b>Ahde Tavukçuluk</b> olarak biz, Tevhid ve Sünnete uygun helal kesim anlayışıyla yola çıkan bir aile işletmesiyiz. 
+          Hedefimiz, sofralarınıza en doğal, en temiz ve en güvenilir ürünleri ulaştırmaktır.
+        </p>
+        <p style="margin-top:15px;">
+          Her Pazar günü özel olarak yaptığımız helal kesim ile anaç tavuk, yumurta, tereyağı ve diğer doğal ürünlerimizi 
+          siz değerli müşterilerimizle buluşturuyoruz. Bizim için ticaret sadece kazanç değil, aynı zamanda bir ahde vefadır.
+        </p>
+        <p style="margin-top:15px;">
+          <b>Misyonumuz:</b> Allah rızasını gözeterek, insan sağlığını önceleyen, aracısız ve şeffaf bir ticaret yapmak.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Ahde Tavukçuluk | Sipariş: <a href="tel:05369604682" style="color:#ccc;">0536 960 46 82</a> - <a href="tel:05310853430" style="color:#ccc;">0531 085 34 30</a></p>
+      <p style="margin-top:10px;">Her Pazar Özel Helal Kesim Günü</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/905369604682" class="whatsapp-float" target="_blank">💬 Hızlı Sipariş</a>
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('#menu a').forEach(a => a.classList.remove('active'));
+  document.getElementById('link-' + pageId).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function toggleUrunler() {
+  document.getElementById('urunlerAccordion').classList.toggle('active');
+  document.getElementById('arrow').classList.toggle('open');
+}
+
+function whatsappGonder(kisi) {
+  let ad = document.getElementById('ad');
+  let tel = document.getElementById('tel');
+  let adres = document.getElementById('adres');
+  let not = document.getElementById('not');
+  
+  [ad, tel, adres].forEach(el => el.classList.remove('hata'));
+  
+  let hataVar = false;
+  if(ad.value.trim() == '') { ad.classList.add('hata'); hataVar = true; }
+  if(tel.value.trim() == '') { tel.classList.add('hata'); hataVar = true; }
+  if(adres.value.trim() == '') { adres.classList.add('hata'); hataVar = true; }
+  
+  let urunler = [];
+  document.querySelectorAll('#urunler .checkbox-item').forEach((item) => {
+    let checkbox = item.querySelector('input[type="checkbox"]');
+    let adet = item.querySelector('.adet-input').value;
+    if(checkbox.checked && adet) {
+      urunler.push(`• ${checkbox.value}: ${adet}`);
+    }
+  });
+  
+  if(urunler.length == 0) {
+    document.getElementById('urunlerAccordion').classList.add('hata');
+    hataVar = true;
+  } else {
+    document.getElementById('urunlerAccordion').classList.remove('hata');
+  }
+  
+  if(hataVar) {
+    alert('Lütfen Ad Soyad, Telefon, Adres ve en az 1 ürün seçiniz. Özel Not zorunlu değildir.');
+    return;
+  }
+  
+  let tarih = new Date().toLocaleDateString('tr-TR');
+  let urunListesi = urunler.join('%0A');
+  
+  let mesaj = `🔔 *YENİ SİPARİŞ* 🔔%0A%0A`;
+  mesaj += `*Müşteri Bilgileri*%0A`;
+  mesaj += `Ad: ${ad.value}%0A`;
+  mesaj += `Tel: ${tel.value}%0A`;
+  mesaj += `Tarih: ${tarih}%0A%0A`;
+  mesaj += `*Sipariş Listesi*%0A`;
+  mesaj += `${urunListesi}%0A%0A`;
+  mesaj += `*Teslimat Adresi*%0A`;
+  mesaj += `${adres.value}%0A%0A`;
+  mesaj += `*Not*%0A`;
+  mesaj += `${not.value}%0A%0A`;
+  mesaj += `_Teslimat Pazar günleri yapılmaktadır._`;
+  
+  let numara = (kisi == 'kadin') ? '905310853430' : '905369604682';
+  window.open(`https://wa.me/${numara}?text=${mesaj}`, '_blank');
+}
+</script>
+
+</body>
+</html>
